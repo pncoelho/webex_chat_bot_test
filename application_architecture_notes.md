@@ -1,23 +1,85 @@
-Docker with webex chat bot app
-	bot that gets the time that the ISS passes over a city
-		bot is inside a room
-		user sends bot a specific message
-		webhook fires to warn bot
-		bot gets the message with location to use
-		bot searches mapquest to get the location GPS coordinates
-		bot uses GPS coordinates to ask ISS Pass Time API to get info
-		bot sends message back with city, date and duration of the ISS passing
+# Application Architecture
 
+
+
+## General Thinking (without organization)
+
+### Docker with webex chat bot app
+
+bot that gets the time that the ISS passes over a city
+
+Workflow:
+
+- bot is inside a Webex roomu
+- user sends bot a specific message
+- webhook fires to warn bot
+- bot gets the message with location to use
+- bot searches mapquest to get the location GPS coordinates
+- bot uses GPS coordinates to ask ISS Pass Time API to get info
+- bot sends message back with city, date and duration of the ISS passing
+
+### Hosting
 
 Docker will be hosted in cloud provider
 
+### Git
 
-Git Repo should be devided in 4 branches:
-	- Development
-	- Unit testing
-	- QA
-	- Staging
-	- Production
+Necessary Git repositories:
+
+- Webex application development (app-webex_iss_chat_bot)
+  - Has all of the application code
+  - Has the application tests
+  - Has the supplementary code necessary to test the application
+- Application Container (docker-webex_iss_chat_bot)
+  - Has the information to build a Dockerfile for the application
+- Application Infrastructure (iac-webex_iss_chat_bot)
+  - Has the IaC for deploying and hosting the application
+- Jenkins Infrastructure (jenkins-webex_iss_chat_bot)
+  - Has the IaC for deploying and configuring the Jenkins server
+  - Has the testing information for the application
+
+
+
+Branches per repository:
+
+- **app-webex_iss_chat_bot**
+  - Development
+    - Development of the application
+  - Testing
+    - Unit testing 
+  - QA
+    - Integration testing using the docker image
+  - Staging
+    - Integration testing using an environment equal to production
+  - Production
+    - Production code
+- **docker-webex_iss_chat_bot**
+  - Development
+    - Development of the Dockerfile and container
+  - QA
+    - Integration testing using the docker image
+  - Staging
+    - Integration testing using an environment equal to production
+  - Production
+    - Production code
+- **iac-webex_iss_chat_bot**
+  - Development
+    - Development of the infrastructure
+  - Staging
+    - Integration testing using an environment equal to production
+  - Production
+    - Production code
+- **jenkins-webex_iss_chat_bot**
+  - Development
+    - Development of the infrastructure
+  - QA
+    - Integration testing using the docker image
+  - Staging
+    - Integration testing using an environment equal to production
+  - Production
+    - Production code
+
+
 
 Tasks to be performed in each branch:
 	Development
